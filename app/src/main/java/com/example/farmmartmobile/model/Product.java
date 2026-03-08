@@ -7,6 +7,7 @@ public class Product {
     private String imageUrl;
     LocalDateTime createdTime, editedTime;
     private int productId;
+    private int quantity;
     private int sellPrice;
     private ProductCategory category;
 }

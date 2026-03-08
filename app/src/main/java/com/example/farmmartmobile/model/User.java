@@ -9,7 +9,7 @@ public class User {
     private String firstName, lastName, email, phoneNumber, password;
     private LocalDateTime createdTime, updatedTime;
 
-    public User(int userId, UserType type, String profileImgUrl, String firstName, String lastName, String email, String phoneNumber, String password, LocalDateTime createdTime, LocalDateTime updatedTime) {
+    public User(int userId, String profileImgUrl, UserType type, String firstName, String lastName, String email, String phoneNumber, String password, LocalDateTime createdTime, LocalDateTime updatedTime) {
         this.userId = userId;
         this.type = type;
         this.profileImgUrl = profileImgUrl;
@@ -26,6 +26,9 @@ public class User {
         return profileImgUrl;
     }
 
+    public void setUserId(int id) {
+        this.userId = id;
+    }
     public UserType getType() {
         return type;
     }
