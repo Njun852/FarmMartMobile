@@ -3,6 +3,7 @@ package com.example.farmmartmobile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,13 +14,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.farmmartmobile.viewmodel.UserViewModel;
 
-public class MainActivity extends AppCompatActivity {
+public class Feed_Activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_feed);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -27,22 +28,20 @@ public class MainActivity extends AppCompatActivity {
         });
 
         UserViewModel userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-
         userViewModel.getUser().observe(this, user ->{
             if(user != null) {
-                //user logged in
-                startActivity(new Intent(this, Feed_Activity.class));
+                TextView txt = findViewById(R.id.textView3);
+                txt.setText("Welcome, "+user.getFirstName()+"!");
+            }else {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
                 finish();
             }
         });
 
-        Button registerBtn = findViewById(R.id.registerBtn);
-        Button loginBtn = findViewById(R.id.loginBtn);
-        registerBtn.setOnClickListener(v ->{
-            startActivity(new Intent(this, Register_Activity.class));
-        });
-        loginBtn.setOnClickListener(v ->{
-            startActivity(new Intent(this, Login_Activity.class));
+        Button logoutBtn = findViewById(R.id.button4);
+        logoutBtn.setOnClickListener(v ->{
+            userViewModel.logOut();
         });
     }
 }

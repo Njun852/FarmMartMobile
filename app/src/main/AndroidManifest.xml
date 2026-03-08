@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FarmMartMobile">
         <activity
+            android:name=".Feed_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Login_Activity"
+            android:exported="false" />
+        <activity
             android:name=".Register_Activity"
             android:exported="false" />
         <activity

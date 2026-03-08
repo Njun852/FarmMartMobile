@@ -1,8 +1,8 @@
 package com.example.farmmartmobile;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,14 +12,15 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.farmmartmobile.viewmodel.UserViewModel;
+import com.google.android.material.textfield.TextInputEditText;
 
-public class MainActivity extends AppCompatActivity {
+public class Login_Activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -27,22 +28,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         UserViewModel userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        Button registerBtn = findViewById(R.id.button3);
 
-        userViewModel.getUser().observe(this, user ->{
-            if(user != null) {
-                //user logged in
-                startActivity(new Intent(this, Feed_Activity.class));
-                finish();
-            }
-        });
-
-        Button registerBtn = findViewById(R.id.registerBtn);
-        Button loginBtn = findViewById(R.id.loginBtn);
         registerBtn.setOnClickListener(v ->{
-            startActivity(new Intent(this, Register_Activity.class));
-        });
-        loginBtn.setOnClickListener(v ->{
-            startActivity(new Intent(this, Login_Activity.class));
+            TextInputEditText email = findViewById(R.id.email);
+            TextInputEditText password = findViewById(R.id.password);
+            userViewModel.login(email.getText().toString(), password.getText().toString());
+            finish();
         });
     }
 }
