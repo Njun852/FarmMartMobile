@@ -10,16 +10,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.farmmartmobile.viewmodel.UserViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Feed_Activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+//        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_feed);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -30,8 +32,6 @@ public class Feed_Activity extends AppCompatActivity {
         UserViewModel userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         userViewModel.getUser().observe(this, user ->{
             if(user != null) {
-                TextView txt = findViewById(R.id.textView3);
-                txt.setText("Welcome, "+user.getFirstName()+"!");
             }else {
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
@@ -39,9 +39,28 @@ public class Feed_Activity extends AppCompatActivity {
             }
         });
 
-        Button logoutBtn = findViewById(R.id.button4);
-        logoutBtn.setOnClickListener(v ->{
-            userViewModel.logOut();
+        if(savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true).add(R.id.fragment_contaienr, HomeFragment.class, null)
+                    .commit();
+        }
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
+
+        bottomNav.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+
+            if(item.getItemId() == R.id.nav_home) {
+                selectedFragment = new HomeFragment();
+            }else if(item.getItemId() == R.id.nav_settings) {
+                selectedFragment = new SettingsFragment();
+            }
+            if(selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_contaienr, selectedFragment)
+                        .commit();
+            }
+            return true;
         });
+
     }
 }
